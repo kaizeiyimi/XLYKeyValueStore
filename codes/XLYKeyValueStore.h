@@ -35,11 +35,8 @@
 - (void)setObject:(id)value forKey:(NSString *)key inTable:(NSString *)tableName;
 - (void)removeObjectForKey:(NSString *)key inTable:(NSString *)tableName;
 
-/// will automatically call 'description' if needed.
 - (NSString *)stringForKey:(NSString *)key inTable:(NSString *)tableName;
-/// will automatically call every object's 'description' if needed.
 - (NSArray *)stringArrayForKey:(NSString *)key inTable:(NSString *)tableName;
-/// will automatically wrap in an array if neeeded.
 - (NSArray *)arrayForKey:(NSString *)key inTable:(NSString *)tableName;
 - (NSDictionary *)dictionaryForKey:(NSString *)key inTable:(NSString *)tableName;
 - (NSData *)dataForKey:(NSString *)key inTable:(NSString *)tableName;

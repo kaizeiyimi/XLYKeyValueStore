@@ -201,21 +201,32 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 - (NSString *)stringForKey:(NSString *)key inTable:(NSString *)tableName
 {
     id object = [self objectForKey:key inTable:tableName];
-    return [object description];
+    if ([object isKindOfClass:[NSString class]]) {
+        return object;
+    } else if ([object isKindOfClass:[NSNumber class]]) {
+        return [object stringValue];
+    }
+    return nil;
 }
 
 - (NSArray *)stringArrayForKey:(NSString *)key inTable:(NSString *)tableName
 {
-    return [[self arrayForKey:key inTable:tableName] valueForKey:@"description"];
+    id object = [self objectForKey:key inTable:tableName];
+    if ([object isKindOfClass:[NSArray class]]) {
+        for (id value in object) {
+            if (![value isKindOfClass:[NSString class]]) {
+                return nil;
+            }
+        }
+        return object;
+    }
+    return nil;
 }
 
 - (NSArray *)arrayForKey:(NSString *)key inTable:(NSString *)tableName
 {
     id object = [self objectForKey:key inTable:tableName];
-    if ([object isKindOfClass:[NSArray class]]) {
-        return object;
-    }
-    return @[object];
+    return [object isKindOfClass:[NSArray class]] ? object : nil;
 }
 
 - (NSDictionary *)dictionaryForKey:(NSString *)key inTable:(NSString *)tableName

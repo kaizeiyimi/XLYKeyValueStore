@@ -80,6 +80,8 @@ static XLYKeyValueStore *store = nil;
     XCTAssertEqual(value, 100);
     value = [store integerForKey:@"id" inTable:nil];
     XCTAssertEqual(value, 0);
+    NSString *string = [store stringForKey:@"id" inTable:@"index"];
+    XCTAssertEqualObjects(string, @"100");
 }
 
 - (void)testString {
@@ -96,13 +98,14 @@ static XLYKeyValueStore *store = nil;
     NSString *stringValue = [store stringForKey:@"id" inTable:@"string"];
     XCTAssertEqualObjects(stringValue, @"102");
     NSArray *stringArray = [store stringArrayForKey:@"id" inTable:@"string"];
-    XCTAssert([stringArray isKindOfClass:[NSArray class]]);
-    XCTAssertEqual(stringArray.count, 1);
-    XCTAssertEqualObjects(stringArray.firstObject, @"102");
+    XCTAssert(!stringArray);
     NSArray *numberArray = [store arrayForKey:@"id" inTable:@"string"];
-    XCTAssert([numberArray isKindOfClass:[NSArray class]]);
-    XCTAssertEqual(numberArray.count, 1);
-    XCTAssertEqualObjects(numberArray.firstObject, @102);
+    XCTAssert(!numberArray);
+    
+    NSArray *array = @[@"a",@"b"];
+    [store setObject:array forKey:@"array" inTable:@"string"];
+    NSArray *array2 = [store objectForKey:@"array" inTable:@"string"];
+    XCTAssertEqualObjects(array, array2);
 }
 
 - (void)testData {
