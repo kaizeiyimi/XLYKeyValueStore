@@ -13,7 +13,7 @@
 
 @property (nonatomic, copy, readonly) NSString *table;
 @property (nonatomic, copy, readonly) NSString *key;
-@property (nonatomic, copy, readonly) id object;
+@property (nonatomic, strong, readonly) id object;
 @property (nonatomic, copy, readonly) NSDate *modifyDate;
 
 @end

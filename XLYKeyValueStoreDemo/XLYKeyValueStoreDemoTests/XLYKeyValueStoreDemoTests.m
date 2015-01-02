@@ -72,6 +72,10 @@ static XLYKeyValueStore *store = nil;
     XCTAssert([object isKindOfClass:[XLYTestTransformableObject class]], @"object must be of 'XLYTestObject' class.");
     XCTAssertEqualObjects(object.name, @"kaizei");
     XCTAssertEqualObjects(object.identity, @1);
+    object = [store storedItemForKey:@"kaizei" inTable:@"user"].object;
+    XCTAssert([object isKindOfClass:[XLYTestTransformableObject class]], @"object must be of 'XLYTestObject' class.");
+    XCTAssertEqualObjects(object.name, @"kaizei");
+    XCTAssertEqualObjects(object.identity, @1);
 }
 
 - (void)testSetNumber {

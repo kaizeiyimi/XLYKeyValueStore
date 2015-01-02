@@ -20,7 +20,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 
 @property (nonatomic, copy) NSString *table;
 @property (nonatomic, copy) NSString *key;
-@property (nonatomic, copy) id object;
+@property (nonatomic, strong) id object;
 @property (nonatomic, copy) NSDate *modifyDate;
 
 @end
