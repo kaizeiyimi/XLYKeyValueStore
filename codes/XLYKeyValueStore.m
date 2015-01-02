@@ -101,6 +101,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 
 - (NSFetchRequest *)requestWithKey:(NSString *)key table:(NSString *)tableName
 {
+    NSAssert(key, @"'key' must not be nil.");
     tableName = tableName ? tableName : kXLYKeyValueStoreDefaultTableName;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:kXLYKeyValueStoreEntityName];
     request.predicate = [NSPredicate predicateWithFormat:@"(%K = %@) && (%K = %@)",
@@ -188,7 +189,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
     NSFetchRequest *request = [self requestWithKey:key table:tableName];
     __block NSError *error;
     [self.context performBlockAndWait:^{
-        id result = [self.context executeFetchRequest:request error:&error];
+        NSArray *result = [self.context executeFetchRequest:request error:&error];
         for (NSManagedObject *object in result) {
             [self.context deleteObject:object];
         }
@@ -294,6 +295,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 
 - (void)setURL:(NSURL *)url forKey:(NSString *)key inTable:(NSString *)tableName
 {
+    NSAssert([url isKindOfClass:[NSURL class]], @"‘url’ must be of 'NSURL' class");
     [self setObject:url forKey:key inTable:tableName];
 }
 
