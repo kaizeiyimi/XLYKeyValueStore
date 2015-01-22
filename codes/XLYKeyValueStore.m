@@ -72,7 +72,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
         for (NSString *propertyName in propertyInfos) {
             NSAttributeDescription *property = [[NSAttributeDescription alloc] init];
             property.name = propertyName;
-            property.attributeType = [propertyInfos[propertyName] integerValue];
+            property.attributeType = (NSAttributeType)[propertyInfos[propertyName] integerValue];
             [properties addObject:property];
         }
         NSEntityDescription *entity = [[NSEntityDescription alloc] init];
@@ -80,9 +80,9 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
         entity.properties = properties;
         NSManagedObjectModel *model = [[NSManagedObjectModel alloc] init];
         [model setEntities:@[entity]];
-        NSPersistentStoreCoordinator *coodinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+        NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
         NSError *error;
-        [coodinator addPersistentStoreWithType:NSSQLiteStoreType
+        [coordinator addPersistentStoreWithType:NSSQLiteStoreType
                                  configuration:nil
                                            URL:[NSURL fileURLWithPath:path]
                                        options:@{NSMigratePersistentStoresAutomaticallyOption:@YES,
@@ -93,7 +93,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
             return nil;
         }
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        context.persistentStoreCoordinator = coodinator;
+        context.persistentStoreCoordinator = coordinator;
         _context = context;
     }
     return self;
@@ -111,7 +111,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 }
 
 #pragma mark - query and save dict
-- (NSDictionary *)storedItemInfoForkey:(NSString *)key table:(NSString *)tableName
+- (NSDictionary *)storedItemInfoForKey:(NSString *)key table:(NSString *)tableName
 {
     NSFetchRequest *request = [self requestWithKey:key table:tableName];
     request.resultType = NSDictionaryResultType;
@@ -145,7 +145,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 #pragma mark - stored XLYKeyValueStoreItem
 - (XLYKeyValueStoreItem *)storedItemForKey:(NSString *)key inTable:(NSString *)tableName
 {
-    NSDictionary *info = [self storedItemInfoForkey:key table:tableName];
+    NSDictionary *info = [self storedItemInfoForKey:key table:tableName];
     if (!info) {
         return nil;
     }
@@ -159,7 +159,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 #pragma mark - core methods
 - (id)objectForKey:(NSString *)key inTable:(NSString *)tableName
 {
-    return [self storedItemInfoForkey:key table:tableName][kXLYKeyValueStoreEntityObjectAttributeName];
+    return [self storedItemInfoForKey:key table:tableName][kXLYKeyValueStoreEntityObjectAttributeName];
 }
 
 - (void)setObject:(id)value forKey:(NSString *)key inTable:(NSString *)tableName
@@ -263,7 +263,7 @@ static NSString * const kXLYKeyValueStoreDefaultTableName = @"__DEFAULT_TABLE__"
 - (BOOL)boolForKey:(NSString *)key inTable:(NSString *)tableName
 {
     id object = [self objectForKey:key inTable:tableName];
-    return [object respondsToSelector:@selector(boolValue)] ? [object boolValue] : 0;
+    return [object respondsToSelector:@selector(boolValue)] ? [object boolValue] : NO;
 }
 
 - (NSURL *)URLForKey:(NSString *)key inTable:(NSString *)tableName

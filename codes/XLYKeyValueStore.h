@@ -27,7 +27,7 @@
 
 - (instancetype)initWithStorePath:(NSString *)path NS_DESIGNATED_INITIALIZER  NS_AVAILABLE(10_7,  5_0);
 
-///you can get the full infomation with this method.
+///you can get the full information with this method.
 - (XLYKeyValueStoreItem *)storedItemForKey:(NSString *)key inTable:(NSString *)tableName;
 
 - (id)objectForKey:(NSString *)key inTable:(NSString *)tableName;
