@@ -18,13 +18,22 @@
 
 @end
 
-/* 
-    almost copy the NSUserDefault API.
+/*
+ * almost copy the NSUserDefault API.
  */
 @interface XLYKeyValueStore : NSObject
 
+/// shared store in disk
 + (instancetype)defaultStore;
 
+/// shared store in memory
++ (instancetype)defaultInMemoryStore;
+
+/*
+ * create a store at path. if path is nil, will create a in memory store.
+ *
+ * core data will generate 3 files, so you sould better create a directory to contain these.
+ */
 - (instancetype)initWithStorePath:(NSString *)path NS_DESIGNATED_INITIALIZER  NS_AVAILABLE(10_7,  5_0);
 
 ///you can get the full information with this method.

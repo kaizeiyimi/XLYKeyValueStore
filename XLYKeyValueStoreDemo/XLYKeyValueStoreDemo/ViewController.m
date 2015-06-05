@@ -8,8 +8,8 @@
 
 #import "ViewController.h"
 
-#import "XLYKeyValueStore.h"
 #import <CoreData/CoreData.h>
+#import "XLYKeyValueStore.h"
 
 @interface ViewController ()
 
@@ -18,19 +18,25 @@
 @implementation ViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    NSString *documentDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSString *path = [documentDir stringByAppendingPathComponent:@"store"];
-
-    XLYKeyValueStore *store = [[XLYKeyValueStore alloc] initWithStorePath:path];
-    [store setObject:[NSURL URLWithString:@"http://www.baidu.com/"] forKey:@"baidu" inTable:@"URL"];
-    id object = [store stringArrayForKey:@"baidu" inTable:@"URL"];
-    NSLog(@"%@", object);   //should be an array of one URL.
+  [super viewDidLoad];
+  NSString *documentDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+  NSString *path = [documentDir stringByAppendingPathComponent:@"store"];
+  
+  XLYKeyValueStore *store = [[XLYKeyValueStore alloc] initWithStorePath:path];
+  
+  id object = [store URLForKey:@"google" inTable:@"URL"];
+  NSLog(@" before set: %@", object);
+  
+  [store setObject:[NSURL URLWithString:@"https://www.google.com/"] forKey:@"google" inTable:@"URL"];
+  
+  object = [store URLForKey:@"google" inTable:@"URL"];
+  NSLog(@"after set: %@", object);
+  
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 @end
